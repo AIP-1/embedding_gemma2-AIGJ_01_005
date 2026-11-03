@@ -9,14 +9,14 @@ Jetson Orin Nano Super 8GB에서 EmbeddingGemma 2를 설치해 텍스트·영상
 | 7 도메인 미세조정 | 강의실 문서 20개 × 질문 4개, 약 64초 학습 | accuracy@1 0.85 → 0.90, ndcg@10 0.938 → 0.95 |
 | 8 물체 검색 | yolo / relabel / yoloe 비교 | YOLO가 모르는 물체 3개: yolo 0개, relabel 3개 정답 |
 | 9 동작·행동 인식 | 규칙(raw / smooth) vs GRU 학습 | smooth로 깜빡임 제거, GRU가 처음 본 사람 15번 중 13번(87%) |
-| 10 접근 감지 | 렌즈·위치 보정, ankle1 / stereo / fused 비교 | 렌즈 RMS 0.13~0.34px, 어깨 삼각측량 평균 오차 0.10m vs 발목 0.66m (가상 시험) |
+| 10 접근 감지 | 교육장 VIGI + C920 2대: 렌즈·위치 보정, ankle1 / stereo / fused, 타겟 알람 | 렌즈 RMS 0.727 / 0.169px, 칸 크기 24.1 vs 24.0mm, stereo 흔들림 약 3cm, 알람 시나리오 3회 이상 정상 (10-7 거리표·10-8은 가상 시험) |
 
 ## 결과 보고서
 
 - **[결과 보고서 (report.md)](report/report.md)** ← 이 파일이 결과 보고서다
 - [PDF 버전 (report.pdf)](report/report.pdf)
 
-10-3~10-8은 가상 시험(합성 영상)으로 진행했고 보고서에 그렇게 표시했다.
+10단계는 실측이 필요한 항목(보정, 세 방식의 실제 위치, 알람, 앱 자원)은 교육장에서 쟀고, 같은 지점 반복 비교(10-7 거리표)와 이동 타겟(10-8)만 가상 시험(합성 영상)으로 했다. 보고서에 구분해 표시했다.
 
 ## 폴더 구성
 
@@ -26,9 +26,8 @@ Jetson Orin Nano Super 8GB에서 EmbeddingGemma 2를 설치해 텍스트·영상
 | `07_finetune/` | 미세조정 스크립트(`train_ft*.py`), 학습·평가 데이터(`data/`), 학습 로그, 모델 설정(`model_config/`, 가중치 제외) |
 | `08_object_search/` | 웹캠 물체 검색 앱(`app.py`: yolo / relabel / yoloe), 촬영 도구, `camera_tools/` |
 | `09_pose_action/` | 동작·행동 인식 앱(`pose_app.py`), GRU 학습(`train_pose.py`), 녹화 특징 CSV(`data/`), 디버그 도구 |
-| `10_proximity/team_classroom/` | 교육장 카메라 2대(VIGI + C920) 코드: 렌즈 보정, 체커보드 위치 보정(`calib_board.py`), 접근 감지 앱(`proximity_app.py`) |
-| `10_proximity/home_tablets/` | 집 환경 렌즈 보정(`calib_intr_fast.py`: 최신 프레임만 사용, 3x3 칸 고루 찍기, 오차 큰 사진 자동 제외) |
-| `10_proximity/virtual_test/` | 가상 카메라 2대 + 합성 영상 시험(`vstereo.py` 세 방식 비교, `vprox.py` 세 지점·접근 알람·TTC)과 결과 |
+| `10_proximity/team_classroom/` | 교육장 카메라 2대(VIGI + C920) 코드: 카메라 입력(`camsrc.py`), 렌즈 보정(`calib_intrinsics.py`), 체커보드 위치 보정(`calib_board.py`), 접근 감지 앱(`proximity_app.py`), 삼각측량(`stereo.py`), 10-7 가상 거리표(`mode_sim.py`)와 모드별 자원 측정(`mode_bench.sh`), 보정 결과(`calib/`) |
+| `10_proximity/virtual_test/` | 10-8 이동 타겟 가상 시험(`vprox.py`, 공통 모듈 `vscene.py`)과 결과 |
 | `report/` | 결과 보고서 (report.md, report.pdf), 과제 안내문 |
 
 ## 실행
@@ -47,7 +46,8 @@ python 10_proximity/team_classroom/proximity_app.py --cams vigi 0 --mode fused -
 ## 보안·개인정보
 
 - 카메라 비밀번호는 환경 변수 `CAM_PW`로만 읽고 코드에 쓰지 않는다.
-- 모델 가중치(`*.pt`, `*.safetensors`), 녹화 영상, 사람이 나오는 이미지는 올리지 않았다.
+- Tailscale 주소와 카메라 MAC 주소는 저장소에 넣지 않는다(`<보드 주소>`로 표기, MAC은 환경 변수 `VIGI_MAC`).
+- 모델 가중치(`*.pt`, `*.safetensors`), 녹화 영상, 사람이 나오는 이미지(보정용 스냅샷 포함)는 올리지 않았다.
 
 ## 환경
 
