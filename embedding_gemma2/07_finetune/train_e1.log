@@ -1,46 +1,0 @@
-Could not reach the Hub (Cannot reach https://huggingface.co/api/models/google/embeddinggemma-2: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'google/embeddinggemma-2'.
-Loading weights:   0%|          | 0/413 [00:00<?, ?it/s]Loading weights:  35%|███▍      | 144/413 [00:00<00:00, 1416.26it/s]Loading weights:  75%|███████▍  | 309/413 [00:00<00:00, 1552.44it/s]Loading weights: 100%|██████████| 413/413 [00:00<00:00, 1518.99it/s]
-/home/team2-2/eg2/lib/python3.12/site-packages/torch/cuda/__init__.py:371: UserWarning: Found GPU0 Orin which is of compute capability (CC) 8.7.
-The following list shows the CCs this version of PyTorch was built for and the hardware CCs it supports:
-- 8.0 which supports hardware CC >=8.0,<9.0 except {8.7}
-- 9.0 which supports hardware CC >=9.0,<10.0
-- 10.0 which supports hardware CC >=10.0,<11.0 except {10.1}
-- 11.0 which supports hardware CC >=11.0,<12.0
-- 12.0 which supports hardware CC >=12.0,<13.0
-  _warn_unsupported_code(d, device_cc, code_ccs)
-Computing widget examples:   0%|          | 0/1 [00:00<?, ?example/s]                                                                       0%|          | 0/18 [00:00<?, ?it/s]NvMapMemAllocInternalTagged failed: error 12
-Failed ioctlCmd: 1075858947
-NvMapMemHandleAlloc failed: error 12
-NvMapMemAllocInternalTagged failed: error 12
-Failed ioctlCmd: 1075858947
-NvMapMemHandleAlloc failed: error 12
-NvMapMemAllocInternalTagged failed: error 12
-Failed ioctlCmd: 1075858947
-NvMapMemHandleAlloc failed: error 12
-NvMapMemAllocInternalTagged failed: error 12
-Failed ioctlCmd: 1075858947
-NvMapMemHandleAlloc failed: error 12
-Traceback (most recent call last):
-  File "/home/team2-2/eg2-lab/train_ft_e1.py", line 39, in <module>
-    trainer.train()
-  File "/home/team2-2/eg2/lib/python3.12/site-packages/transformers/trainer.py", line 1559, in train
-    return inner_training_loop(
-           ^^^^^^^^^^^^^^^^^^^^
-  File "/home/team2-2/eg2/lib/python3.12/site-packages/transformers/trainer.py", line 1643, in _inner_training_loop
-    self._run_epoch(
-  File "/home/team2-2/eg2/lib/python3.12/site-packages/transformers/trainer.py", line 1889, in _run_epoch
-    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/team2-2/eg2/lib/python3.12/site-packages/transformers/trainer.py", line 2098, in training_step
-    self.accelerator.backward(loss, **kwargs)
-  File "/home/team2-2/eg2/lib/python3.12/site-packages/accelerate/accelerator.py", line 2861, in backward
-    loss.backward(**kwargs)
-  File "/home/team2-2/eg2/lib/python3.12/site-packages/torch/_tensor.py", line 631, in backward
-    torch.autograd.backward(
-  File "/home/team2-2/eg2/lib/python3.12/site-packages/torch/autograd/__init__.py", line 381, in backward
-    _engine_run_backward(
-  File "/home/team2-2/eg2/lib/python3.12/site-packages/torch/autograd/graph.py", line 869, in _engine_run_backward
-    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-RuntimeError: NVML_SUCCESS == r INTERNAL ASSERT FAILED at "/pytorch/c10/cuda/CUDACachingAllocator.cpp":1165, please report a bug to PyTorch. 
-  0%|          | 0/18 [00:04<?, ?it/s]
